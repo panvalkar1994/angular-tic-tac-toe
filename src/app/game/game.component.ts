@@ -7,7 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GameComponent implements OnInit {
 
-  board = [["", "", ""],["", "", ""],["","", ""]];
+  mainBoard = [["", "", ""],["", "", ""],["","", ""]];
+  board = JSON.parse(JSON.stringify(this.mainBoard))
   player1 = true;
   win = false;
 
@@ -60,5 +61,9 @@ export class GameComponent implements OnInit {
     if(leadDia.every(isMatch, mark)) return true;
     if(secDia.every(isMatch, mark)) return true;
     return false;
+  }
+
+  resetGame(){
+    this.board = JSON.parse(JSON.stringify(this.mainBoard));
   }
 }
