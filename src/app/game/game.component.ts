@@ -19,7 +19,6 @@ export class GameComponent implements OnInit {
   }
 
   playerMove(row:number, col:number){
-    console.log(row,col)
     if(this.board[row][col] != ""){
       alert("You cannot select, already selected cell.");
       return
@@ -29,7 +28,7 @@ export class GameComponent implements OnInit {
       if(this.winningMove(row, col, "X")){
         setTimeout(()=>{
           // alert("Player1 won");
-          this.displaySnackbar("1");
+          this.displaySnackbar("Player 1 Won!");
           this.resetGame();
         },0)
       }
@@ -38,7 +37,7 @@ export class GameComponent implements OnInit {
       if(this.winningMove(row, col, "O")){
         setTimeout(()=>{
           // alert("Player2 won");
-          this.displaySnackbar("2");
+          this.displaySnackbar("Player 2 won!");
           this.resetGame();
         },0)
       }
@@ -56,6 +55,9 @@ export class GameComponent implements OnInit {
     const colums = [this.board[0][col], this.board[1][col],this.board[2][col]];
     const colWin = colums.every(isMatch);
     if(colWin) return colWin;
+    if(this.checkBoardFilled()){
+      this.displaySnackbar("Match Draw!");
+    }
     return false;
   }
 
@@ -73,11 +75,21 @@ export class GameComponent implements OnInit {
     this.player1 = true;
   }
 
-  displaySnackbar(player:string){
+  displaySnackbar(message:string){
     this.snackbar.nativeElement.setAttribute('style', 'display:block;');
-    this.snackbar.nativeElement.innerText = `Player ${player} won`;
+    this.snackbar.nativeElement.innerText = message;
     setTimeout(()=>{
       this.snackbar.nativeElement.setAttribute('style','display:none;');
     },2000);
+  }
+
+  checkBoardFilled(){
+    let count = 0;
+    for(let i=0; i<3; i++){
+      for(let j=0; j<3; j++){
+        if(this.board[i][j]!=="") count++;
+      }
+    }
+    return count===9;
   }
 }
