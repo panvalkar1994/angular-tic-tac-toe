@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-game',
@@ -11,6 +11,7 @@ export class GameComponent implements OnInit {
   board = JSON.parse(JSON.stringify(this.mainBoard))
   player1 = true;
   win = false;
+  @ViewChild('snackbarRef') snackbar!:ElementRef<HTMLDivElement>;
 
   constructor() { }
 
@@ -27,14 +28,18 @@ export class GameComponent implements OnInit {
       this.board[row][col] = "X";
       if(this.winningMove(row, col, "X")){
         setTimeout(()=>{
-          alert("Player1 won");
+          // alert("Player1 won");
+          this.displaySnackbar("1");
+          this.resetGame();
         },0)
       }
     }else{
       this.board[row][col] = "O";
       if(this.winningMove(row, col, "O")){
         setTimeout(()=>{
-          alert("Player2 won");
+          // alert("Player2 won");
+          this.displaySnackbar("2");
+          this.resetGame();
         },0)
       }
     }
@@ -65,5 +70,14 @@ export class GameComponent implements OnInit {
 
   resetGame(){
     this.board = JSON.parse(JSON.stringify(this.mainBoard));
+    this.player1 = true;
+  }
+
+  displaySnackbar(player:string){
+    this.snackbar.nativeElement.setAttribute('style', 'display:block;');
+    this.snackbar.nativeElement.innerText = `Player ${player} won`;
+    setTimeout(()=>{
+      this.snackbar.nativeElement.setAttribute('style','display:none;');
+    },2000);
   }
 }

@@ -44,3 +44,17 @@
     font-weight: 600;
     
 }
+
+.snackbar{
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    z-index: 5;
+    background: #999;
+    font-size: 2rem;
+    height: 100%;
+    width: 100%;
+    padding-left: 33%;
+    padding-top: 33%;
+}
